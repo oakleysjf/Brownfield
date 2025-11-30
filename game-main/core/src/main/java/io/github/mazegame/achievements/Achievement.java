@@ -1,7 +1,4 @@
-/*
-add imports and package
- */
-
+package io.github.mazegame.Achievements;
 
 public abstract class Achievement {
     public AchievementID id;
