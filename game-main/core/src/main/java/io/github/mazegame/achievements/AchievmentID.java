@@ -1,6 +1,4 @@
-/* 
-add imports and package
-*/
+package io.github.mazegame.Achievements;
 
 public enum AchievementID{
     GIVE_RED_BOX,
