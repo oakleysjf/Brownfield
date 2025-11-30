@@ -1,4 +1,4 @@
-package io.github.mazegame.Achievements;
+package io.github.mazegame.achievements;
 
 import java.util.HashMap;
 import java.util.Map;
