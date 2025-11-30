@@ -1,6 +1,4 @@
-/*
-add imports and package
- */
+package io.github.mazegame.Achievements;
 
 import java.util.HashMap;
 import java.util.Map;
