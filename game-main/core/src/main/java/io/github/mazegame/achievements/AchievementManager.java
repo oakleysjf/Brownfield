@@ -3,9 +3,9 @@ package io.github.mazegame.achievements;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class Achievements {
+public final class AchievementManager {
     public static final Map<AchievementID, Achievement> achievements = new HashMap<>();
-    static {
+    public void add(Achievement achievement){
         achievements.put(AchievementID,PICK_UP_ITEM, new PickUpItemAchievment());
         achievements.put(AchievementID.GIVE_RED_BOX, new GiveRedBoxAchievement());
     }
