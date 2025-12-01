@@ -1,5 +1,6 @@
 package io.github.mazegame;
 
+import io.github.mazegame.achievements.AchievementManager;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -12,6 +13,8 @@ public class MazeGame extends Game{
     static public BitmapFont font;
     public ExtendViewport viewport;
 
+    private AchievementManager achievementManager;
+    
     /** Creates the game */
     public void create() {
         batch = new SpriteBatch();
@@ -21,6 +24,9 @@ public class MazeGame extends Game{
         font.setUseIntegerPositions(true);
         font.getData().setScale(1);
 
+        achievementManager = new AchievementManager();
+        achievementManager.init();
+        
         this.setScreen(new GameScreen(this));
     }
 
@@ -31,5 +37,9 @@ public class MazeGame extends Game{
     public void dispose() {
         batch.dispose();
         font.dispose();
+    }
+
+    public AchievementManager getAchievementManager() {
+        return achievementManager;
     }
 }
