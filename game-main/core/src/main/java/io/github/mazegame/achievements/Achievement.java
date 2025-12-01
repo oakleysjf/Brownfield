@@ -9,11 +9,17 @@ package io.github.mazegame.achievements;
  */
 
 public abstract class Achievement {
-    public AchievementID id;
-    public String title;
-    public String description;
+    private final AchievementID id;
+    private final String title;
+    private final String description;
 
-    public boolean unlocked = false;
+    private boolean unlocked = false;
+
+    public Achievement(AchievementID id, String title, String description){
+        this.id = id;
+        this.title = title;
+        this.description = description;
+    }
 
     public AchievementID getId() { 
         return id; 
