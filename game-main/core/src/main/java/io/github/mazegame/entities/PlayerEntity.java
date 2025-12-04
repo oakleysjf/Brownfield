@@ -41,7 +41,7 @@ public class PlayerEntity extends CharacterEntity {
     //#region Initialisation
 
     /** Creates a new player.
-     * 
+     *
      * @param gridPosition the position on the grid
      */
     public PlayerEntity(Vector2 gridPosition) {
@@ -70,7 +70,7 @@ public class PlayerEntity extends CharacterEntity {
      * @param delta the time since the last frame
      */
     public void update(float delta) {
-        if (!isMoving) { 
+        if (!isMoving) {
             input();
         } else {
             move(delta);
@@ -86,7 +86,7 @@ public class PlayerEntity extends CharacterEntity {
         if (failMove){
             Vector2 nextPosition = new Vector2(nextGridPosition).scl(Grid.GRID_SQUARE_SIZE);
             setPosition(position.interpolate(nextPosition, MOVE_SPEED * moveMult * delta, Interpolation.exp10Out));
-            
+
             // Moves the player to the destination if they are reasonable close enough
             if (position.dst2(nextPosition) < 40f * 40f){
                 isMoving = false;
@@ -99,13 +99,13 @@ public class PlayerEntity extends CharacterEntity {
             // and moves the player closer to the target position
             Vector2 nextPosition = new Vector2(nextGridPosition).scl(Grid.GRID_SQUARE_SIZE);
             setPosition(position.interpolate(nextPosition, MOVE_SPEED * moveMult * delta, Interpolation.exp10Out));
-            
+
             // Moves the player to the destination if they are reasonable close enough
             if (position.dst2(nextPosition) < 1f){
                 setGridPosition(nextGridPosition);
                 isMoving = false;
                 applyEffects();
-            }   
+            }
         }
     }
 
@@ -130,30 +130,70 @@ public class PlayerEntity extends CharacterEntity {
     /** Checks the inputs and sets values accordingly. */
     private void input() {
         // Checks if the player pressed any of movement keys and set it to move to the position.
-        if (Gdx.input.isKeyJustPressed(Input.Keys.A) || Gdx.input.isKeyJustPressed(Input.Keys.LEFT)) {
-            nextGridPosition = new Vector2(gridPosition.x - 1, gridPosition.y);
-            isMoving = true;
-        } 
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.D) || Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)) {
-            nextGridPosition = new Vector2(gridPosition.x + 1, gridPosition.y);
-            isMoving = true;
-        } 
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.W) || Gdx.input.isKeyJustPressed(Input.Keys.UP)) {
-            nextGridPosition = new Vector2(gridPosition.x, gridPosition.y + 1);
-            isMoving = true;
+        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                nextGridPosition = new Vector2(gridPosition.x - 1, gridPosition.y + 1);
+                isMoving = true;
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                nextGridPosition = new Vector2(gridPosition.x - 1, gridPosition.y - 1);
+                isMoving = true;
+            }
+            else {
+                nextGridPosition = new Vector2(gridPosition.x - 1, gridPosition.y);
+                isMoving = true;
+            }
         }
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.S) || Gdx.input.isKeyJustPressed(Input.Keys.DOWN)) {
-            nextGridPosition = new Vector2(gridPosition.x, gridPosition.y - 1);
-            isMoving = true;
+        else if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                nextGridPosition = new Vector2(gridPosition.x + 1, gridPosition.y + 1);
+                isMoving = true;
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                nextGridPosition = new Vector2(gridPosition.x + 1, gridPosition.y - 1);
+                isMoving = true;
+            }
+            else {
+                nextGridPosition = new Vector2(gridPosition.x + 1, gridPosition.y);
+                isMoving = true;
+            }
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                nextGridPosition = new Vector2(gridPosition.x - 1, gridPosition.y + 1);
+                isMoving = true;
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                nextGridPosition = new Vector2(gridPosition.x + 1, gridPosition.y + 1);
+                isMoving = true;
+            }
+            else {
+                nextGridPosition = new Vector2(gridPosition.x, gridPosition.y + 1);
+                isMoving = true;
+            }
+        }
+        else if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                nextGridPosition = new Vector2(gridPosition.x - 1, gridPosition.y - 1);
+                isMoving = true;
+            }
+            else if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                nextGridPosition = new Vector2(gridPosition.x + 1, gridPosition.y - 1);
+                isMoving = true;
+            }
+            else {
+                nextGridPosition = new Vector2(gridPosition.x, gridPosition.y - 1);
+                isMoving = true;
+            }
         }
 
         // If the player has pressed a movement key, check to see if the player can move to that space or if
         // an entity is in that space.
         if (isMoving) {
-            // Checks if the next tile is impassable and sets the move to fail if it is. 
+            // Checks if the next tile is impassable and sets the move to fail if it is.
             if (Grid.getTile(nextGridPosition).getTileType() == TileType.EXIT) {
                 // Add code to win the game.
-                
+
                 failMove = false;
             }
             else if (!(Grid.getTile(nextGridPosition).getTileType() == TileType.PASSABLE)) {
@@ -191,7 +231,7 @@ public class PlayerEntity extends CharacterEntity {
     //#region Getters and Setters
 
     /** Sets the movement multiplier to the specified value.
-     * 
+     *
      * @param value the value to set the movement multiplier to.
      */
     public void setMoveMult(float value) {
@@ -199,7 +239,7 @@ public class PlayerEntity extends CharacterEntity {
     }
 
     /** Adds a value to the current movement multiplier.
-     * 
+     *
      * @param value the value to add to the movement multiplier.
      */
     public void addMoveMult(float value) {
