@@ -83,4 +83,11 @@ public final class EntityManager {
         }
         return null;
     }
+
+    /** Clears all entities from the manager. Used primarily for testing. */
+    public static void clear(){
+        entities.clear();
+        addedEntities.clear();
+        isUpdating = false;
+    }
 }

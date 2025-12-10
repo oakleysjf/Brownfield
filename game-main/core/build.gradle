@@ -1,6 +1,8 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 eclipse.project.name = appName + '-core'
 
+apply plugin: 'jacoco'
+
 dependencies {
   api "com.badlogicgames.ashley:ashley:$ashleyVersion"
   api "com.badlogicgames.gdx-controllers:gdx-controllers-core:$gdxControllersVersion"
@@ -11,4 +13,40 @@ dependencies {
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+
+  // JUnit setup
+  testImplementation "junit:junit:4.13.2"
+  
+  // Mockito setup
+  testImplementation "org.mockito:mockito-core:5.2.0"
 }
+
+test {
+  useJUnit()
+}
+
+jacoco {
+  toolVersion = "0.8.10"
+}
+
+jacocoTestReport {
+  dependsOn test
+
+  reports {
+    xml.required = true
+    html.required = true
+    csv.required = false
+  }
+  
+  afterEvaluate {
+    classDirectories.setFrom(files(classDirectories.files.collect {
+      fileTree(dir: it, exclude: [
+        '**/R.class',
+        '**/R$*.class',
+        '**/BuildConfig.class'
+      ])
+    }))
+  }
+}
+
+tasks.test.finalizedBy jacocoTestReport
