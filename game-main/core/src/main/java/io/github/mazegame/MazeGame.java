@@ -14,6 +14,12 @@ public class MazeGame extends Game{
     public ExtendViewport viewport;
 
     private AchievementManager achievementManager;
+
+    Code code1 = new Code();
+    Code code2 = new Code();
+    Code code3 = new Code();
+    Code code4 = new Code();
+    Code code5 = new Code();
     
     /** Creates the game */
     public void create() {
@@ -28,6 +34,27 @@ public class MazeGame extends Game{
         achievementManager.init();
         
         this.setScreen(new GameScreen(this));
+    }
+
+    /** Getters for the codes */
+    public Code getCode1() {
+        return code1;
+    }
+
+    public Code getCode2() {
+        return code2;
+    }
+
+    public Code getCode3() {
+        return code3;
+    }
+
+    public Code getCode4() {
+        return code4;
+    }
+
+    public Code getCode5() {
+        return code5;
     }
 
     public void render() {
