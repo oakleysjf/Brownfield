@@ -8,6 +8,7 @@ import io.github.mazegame.Grid;
 import io.github.mazegame.MazeGame;
 import io.github.mazegame.items.Item;
 
+/** An NPC entity that offers a quest to trade items with the player. */
 public class QuestGiverEntity extends CharacterEntity {
 
     public Item wantedItem;
@@ -52,6 +53,7 @@ public class QuestGiverEntity extends CharacterEntity {
             PlayerEntity.instance.setHeldItem(getHeldItem());
             setHeldItem(null);
             wantedItem = null;
+            io.github.mazegame.GameStats.recordQuestGiverInteraction();
         }
     }
 

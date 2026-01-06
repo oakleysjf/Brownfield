@@ -37,6 +37,12 @@ public class PlayerEntity extends CharacterEntity {
 
     //#endregion
 
+    //#region Static Variables
+
+    public static boolean hasWon = false;
+
+    //#endregion
+
 
     //#region Initialisation
 
@@ -192,9 +198,24 @@ public class PlayerEntity extends CharacterEntity {
         if (isMoving) {
             // Checks if the next tile is impassable and sets the move to fail if it is.
             if (Grid.getTile(nextGridPosition).getTileType() == TileType.EXIT) {
-                // Add code to win the game.
-
+                // Win condition: set a static flag in PlayerEntity
+                PlayerEntity.hasWon = true;
                 failMove = false;
+            }
+            else if (Grid.getTile(nextGridPosition).getTileType() == TileType.DOOR) {
+                // Check if door is locked
+                io.github.mazegame.tiles.DoorTile door = (io.github.mazegame.tiles.DoorTile) Grid.getTile(nextGridPosition);
+                if (door.isLocked()) {
+                    // Door is locked - show notification
+                    int collected = io.github.mazegame.CodeManager.getCodesCollected();
+                    io.github.mazegame.NotificationManager.instance.addNotification("Door Locked! Codes: " + collected + "/5");
+                    failMove = true;
+                } else {
+                    // Door is unlocked - player wins
+                    PlayerEntity.hasWon = true;
+                    io.github.mazegame.NotificationManager.instance.addNotification("Door Unlocked! You Win!");
+                    failMove = false;
+                }
             }
             else if (!(Grid.getTile(nextGridPosition).getTileType() == TileType.PASSABLE)) {
                 failMove = true;

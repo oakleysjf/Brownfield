@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.mazegame.Grid;
 import io.github.mazegame.effects.SlowEffect;
 
+/** An entity that applies a slow effect to the player when collected. */
 public class GlueEntity extends Entity{
 
     /** Creates a new glue entity.
@@ -19,11 +20,13 @@ public class GlueEntity extends Entity{
         isCollider = false;
     }
 
+    /** Updates the glue entity and applies slow effect to player if they occupy the same position. */
     public void update (float delta) {
         // Checks if the player is on the same grid space as this entity
         // If they are aplly the slow effect to the player and seet this entity to be deleted.
         if (PlayerEntity.instance.getGridPosition().equals(gridPosition)) {
             PlayerEntity.instance.giveEffect(new SlowEffect(5));
+            io.github.mazegame.GameStats.recordGlueUsage();
             System.out.println(isExpired);
             isExpired = true;
         }

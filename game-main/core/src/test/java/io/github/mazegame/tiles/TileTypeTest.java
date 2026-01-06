@@ -2,7 +2,6 @@ package io.github.mazegame.tiles;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -30,8 +29,8 @@ public class TileTypeTest {
 
     @Test
     public void testTileTypeEquality() {
-        assertTrue(TileType.PASSABLE == TileType.PASSABLE);
-        assertFalse(TileType.PASSABLE == TileType.IMPASSABLE);
+        assertSame(TileType.PASSABLE, TileType.PASSABLE);
+        assertNotSame(TileType.PASSABLE, TileType.IMPASSABLE);
     }
 
     @Test

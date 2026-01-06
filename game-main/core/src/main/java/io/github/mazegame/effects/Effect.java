@@ -1,5 +1,6 @@
 package io.github.mazegame.effects;
 
+/** Abstract base class for temporary effects applied to the player. */
 public abstract class Effect {
     public int duration;
 
@@ -11,7 +12,7 @@ public abstract class Effect {
         this.duration = duration;
     }
 
-    /** Applies the effect assositated by this given effect. */
+    /** Applies the effect associated with this effect and decrements its duration. */
     public abstract void applyEffect();
 
     @Override

@@ -1,5 +1,9 @@
 package io.github.mazegame;
 
+import java.awt.Graphics;
+import java.awt.Color;
+
+/** Legacy class for drawing an exit (unused in current LibGDX implementation). */
 public class Exit {
     public void draw(Graphics g, int x, int y, int w, int h){
         Color prev = g.getColor();

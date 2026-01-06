@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.mazegame.entities.PlayerEntity;
+import io.github.mazegame.tiles.DoorTile;
 import io.github.mazegame.tiles.ExitTile;
 import io.github.mazegame.tiles.FloorTile;
 import io.github.mazegame.tiles.Tile;
@@ -97,6 +98,9 @@ public class Grid {
             // Exit
             case '$':
                 return new ExitTile();
+            // Door
+            case 'D':
+                return new DoorTile();
             default:
                 throw new RuntimeException("Character "+ tile +" not supported");
         }
