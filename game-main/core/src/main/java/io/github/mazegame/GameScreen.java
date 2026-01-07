@@ -29,7 +29,10 @@ public class GameScreen implements Screen {
     final MazeGame GAME;
     public Grid grid;
     private OrthographicCamera camera;
+    private OrthographicCamera uiCamera;
     private boolean isPaused = false;
+    private float elapsedTime = 0f;
+    private static final float GAME_TIME_LIMIT = 300f; // 5 minutes in seconds
 
     // ===================UI==================
     PauseMenu pauseMenu;
@@ -52,6 +55,7 @@ public class GameScreen implements Screen {
         grid = new Grid("levels/level3.txt");
         EntityManager.add(new QuestGiverEntity(new Vector2(1,1), Items.get(ItemID.RED_TEST_BOX), Items.get(ItemID.TEST_BOX)));
         EntityManager.add(new GlueEntity(new Vector2(5,3)));
+        EntityManager.add(new io.github.mazegame.entities.EnergyDrinkEntity(new Vector2(10, 9)));
         
         // Add code collectibles to reachable areas in the maze (based on level3.txt layout)
         io.github.mazegame.Code code1 = new io.github.mazegame.Code();
@@ -77,6 +81,11 @@ public class GameScreen implements Screen {
         // Makes the camera and sets the viewport to use the camera.
         camera = new OrthographicCamera(800, 500);
         GAME.viewport.setCamera(camera);
+        
+        // Create UI camera for fixed screen overlay
+        uiCamera = new OrthographicCamera(800, 500);
+        uiCamera.position.set(400, 250, 0);
+        uiCamera.update();
 
         // Creates the pause menu.
         pauseMenu = new PauseMenu(this);
@@ -92,6 +101,14 @@ public class GameScreen implements Screen {
         logic(delta);
         input();
         NotificationManager.instance.update(delta);
+        if (!isPaused) {
+            elapsedTime += delta;
+        }
+        if (elapsedTime >= GAME_TIME_LIMIT) {
+            // Time's up - player caught by dean
+            GAME.setScreen(new LoseScreen(GAME));
+            return;
+        }
         if (PlayerEntity.hasWon) {
             // Transition to win screen
             GAME.setScreen(new WinScreen(GAME));
@@ -164,6 +181,27 @@ public class GameScreen implements Screen {
         GAME.batch.setProjectionMatrix(GAME.viewport.getCamera().combined);
         GAME.batch.begin();
         NotificationManager.instance.draw(GAME.batch, GAME.viewport.getWorldWidth(), GAME.viewport.getWorldHeight());
+        
+        // Draw timer in top-middle
+        float remainingTime = GAME_TIME_LIMIT - elapsedTime;
+        int minutes = (int) remainingTime / 60;
+        int seconds = (int) remainingTime % 60;
+        String timeString = String.format("%d:%02d", minutes, seconds);
+        
+        MazeGame.font.getData().setScale(2f);
+        com.badlogic.gdx.graphics.g2d.GlyphLayout timerLayout = new com.badlogic.gdx.graphics.g2d.GlyphLayout(MazeGame.font, timeString);
+        float timerX = (GAME.viewport.getWorldWidth() - timerLayout.width) / 2f;
+        float timerY = GAME.viewport.getWorldHeight() - 40;
+        MazeGame.font.draw(GAME.batch, timeString, timerX, timerY);
+        
+        // Draw subtitle
+        MazeGame.font.getData().setScale(0.8f);
+        String subtitle = "Escape from Uni!";
+        com.badlogic.gdx.graphics.g2d.GlyphLayout subtitleLayout = new com.badlogic.gdx.graphics.g2d.GlyphLayout(MazeGame.font, subtitle);
+        float subtitleX = (GAME.viewport.getWorldWidth() - subtitleLayout.width) / 2f;
+        float subtitleY = timerY - 30;
+        MazeGame.font.draw(GAME.batch, subtitle, subtitleX, subtitleY);
+        
         GAME.batch.end();
 
         // UI elements
@@ -208,4 +246,6 @@ public class GameScreen implements Screen {
     public void resize(int width, int height) {
         GAME.viewport.update(width, height, true);
     }
+
+    //#endregion
 }

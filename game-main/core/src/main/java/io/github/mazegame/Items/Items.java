@@ -8,6 +8,7 @@ public final class Items {
     public static Map<ItemID, Item> items =  new HashMap<ItemID, Item>() {{
         put(ItemID.RED_TEST_BOX,new RedTestBoxItem());
         put(ItemID.TEST_BOX,new TestBoxItem());
+        put(ItemID.ENERGY_DRINK,new EnergyDrinkItem());
     }};
 
     public static Item get(ItemID ID) {
