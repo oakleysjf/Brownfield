@@ -244,6 +244,40 @@ public class PlayerEntity extends CharacterEntity {
                 }
             }
         }
+
+        // If the E key is pressed, interact with nearby NPC
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
+            // Check current position and all 8 adjacent positions for NPC
+            TuringMachineNPCEntity foundNPC = null;
+            
+            Vector2[] checkPositions = {
+                gridPosition,
+                new Vector2(gridPosition.x + 1, gridPosition.y),
+                new Vector2(gridPosition.x - 1, gridPosition.y),
+                new Vector2(gridPosition.x, gridPosition.y + 1),
+                new Vector2(gridPosition.x, gridPosition.y - 1),
+                new Vector2(gridPosition.x + 1, gridPosition.y + 1),
+                new Vector2(gridPosition.x + 1, gridPosition.y - 1),
+                new Vector2(gridPosition.x - 1, gridPosition.y + 1),
+                new Vector2(gridPosition.x - 1, gridPosition.y - 1)
+            };
+            
+            for (Vector2 pos : checkPositions) {
+                Entity entity = EntityManager.getCollider(pos);
+                if (entity instanceof TuringMachineNPCEntity) {
+                    foundNPC = (TuringMachineNPCEntity) entity;
+                    break;
+                }
+            }
+            
+            if (foundNPC != null && !foundNPC.hasBeenAnswered()) {
+                // Open the quiz screen
+                if (io.github.mazegame.GameScreen.currentGameScreen != null) {
+                    io.github.mazegame.MazeGame game = (io.github.mazegame.MazeGame) Gdx.app.getApplicationListener();
+                    game.setScreen(new io.github.mazegame.QuizScreen(game, io.github.mazegame.GameScreen.currentGameScreen, foundNPC));
+                }
+            }
+        }
     }
 
     //#endregion
@@ -274,6 +308,16 @@ public class PlayerEntity extends CharacterEntity {
     public void giveEffect(Effect effect) {
         effect.applyEffect();
         effects.add(effect);
+    }
+
+    /**
+     * Collects a code and adds it to the player's collection.
+     * 
+     * @param code the code to collect
+     */
+    public void collectCode(io.github.mazegame.Code code) {
+        code.collect();
+        io.github.mazegame.NotificationManager.instance.addNotification("Code collected!");
     }
 
     //#endregion

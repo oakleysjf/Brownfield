@@ -33,6 +33,9 @@ public class GameScreen implements Screen {
     private boolean isPaused = false;
     private float elapsedTime = 0f;
     private static final float GAME_TIME_LIMIT = 300f; // 5 minutes in seconds
+    
+    // Static reference for player to access game screen for quiz interaction
+    public static GameScreen currentGameScreen;
 
     // ===================UI==================
     PauseMenu pauseMenu;
@@ -47,6 +50,7 @@ public class GameScreen implements Screen {
     /** Creates the game screen */
     public GameScreen(final MazeGame game){
         this.GAME = game;
+        GameScreen.currentGameScreen = this; // Set static reference for quiz interaction
         EntityManager.clear(); // Clear all entities from previous game
         PlayerEntity.instance = null; // Reset player singleton
         PlayerEntity.hasWon = false; // Reset win flag
@@ -57,25 +61,22 @@ public class GameScreen implements Screen {
         EntityManager.add(new GlueEntity(new Vector2(5,3)));
         EntityManager.add(new io.github.mazegame.entities.EnergyDrinkEntity(new Vector2(10, 9)));
         
+        // Add Turing Machine NPC that will give Code4 on correct answer
+        EntityManager.add(new io.github.mazegame.entities.TuringMachineNPCEntity(new Vector2(18, 5)));
+        
         // Add code collectibles to reachable areas in the maze (based on level3.txt layout)
         io.github.mazegame.Code code1 = new io.github.mazegame.Code();
         io.github.mazegame.Code code2 = new io.github.mazegame.Code();
-        io.github.mazegame.Code code3 = new io.github.mazegame.Code();
-        io.github.mazegame.Code code4 = new io.github.mazegame.Code();
         io.github.mazegame.Code code5 = new io.github.mazegame.Code();
         
-        // Place codes in reachable floor areas of the maze
+        // Place codes in reachable floor areas of the maze (Code3 and Code4 removed - obtained via NPC trades)
         EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(2, 1), code1, "Code1"));
         EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(13, 1), code2, "Code2"));
-        EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(5, 9), code3, "Code3"));
-        EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(15, 9), code4, "Code4"));
         EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(20, 11), code5, "Code5"));
         
         // Register codes with CodeManager
         io.github.mazegame.CodeManager.registerCode(0, code1);
         io.github.mazegame.CodeManager.registerCode(1, code2);
-        io.github.mazegame.CodeManager.registerCode(2, code3);
-        io.github.mazegame.CodeManager.registerCode(3, code4);
         io.github.mazegame.CodeManager.registerCode(4, code5);
         
         // Makes the camera and sets the viewport to use the camera.

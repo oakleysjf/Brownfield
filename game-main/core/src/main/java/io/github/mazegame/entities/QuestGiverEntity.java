@@ -7,13 +7,15 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.mazegame.Grid;
 import io.github.mazegame.MazeGame;
 import io.github.mazegame.items.Item;
+import io.github.mazegame.Code;
 
 /** An NPC entity that offers a quest to trade items with the player. */
 public class QuestGiverEntity extends CharacterEntity {
 
     public Item wantedItem;
-    public String requestText = "I want a red test box, I'll give you my test box";
-    public String finishText = "Thanks for that red test box";
+    public String requestText = "Hand me that assignment!";
+    public String finishText = "Thanks, have your grade.";
+    private Code code3Reward;
 
     /**
      * Creates a new quest giver.
@@ -28,6 +30,7 @@ public class QuestGiverEntity extends CharacterEntity {
         image = new Texture("images/entities/character.png");
         isCollider = true;
         setHeldItem(heldItem);
+        code3Reward = new Code();
     }
 
     /**
@@ -47,12 +50,16 @@ public class QuestGiverEntity extends CharacterEntity {
     public void update(float delta) { }
 
     /** Used by the player to check if they have the correct item to trade, if they do replace their current item with
-     *  the quest item. */
+     *  the quest item and give Code3. */
     public void checkTrade() {
         if (canTrade()) {
             PlayerEntity.instance.setHeldItem(getHeldItem());
             setHeldItem(null);
             wantedItem = null;
+            // Give Code3 to player
+            PlayerEntity.instance.collectCode(code3Reward);
+            io.github.mazegame.CodeManager.registerCode(2, code3Reward);
+            io.github.mazegame.CodeManager.incrementCodesCollected();
             io.github.mazegame.GameStats.recordQuestGiverInteraction();
         }
     }
