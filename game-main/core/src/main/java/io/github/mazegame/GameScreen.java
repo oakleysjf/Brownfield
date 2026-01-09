@@ -64,12 +64,14 @@ public class GameScreen implements Screen {
         // Add Turing Machine NPC that will give Code4 on correct answer
         EntityManager.add(new io.github.mazegame.entities.TuringMachineNPCEntity(new Vector2(18, 5)));
         
+        // Add Duck NPC that walks vertically and chases the player
+        EntityManager.add(new io.github.mazegame.entities.DuckNPCEntity(new Vector2(28, 13)));
+        
         // Add code collectibles to reachable areas in the maze (based on level3.txt layout)
         io.github.mazegame.Code code1 = new io.github.mazegame.Code();
         io.github.mazegame.Code code2 = new io.github.mazegame.Code();
         io.github.mazegame.Code code5 = new io.github.mazegame.Code();
         
-        // Place codes in reachable floor areas of the maze (Code3 and Code4 removed - obtained via NPC trades)
         EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(2, 1), code1, "Code1"));
         EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(13, 1), code2, "Code2"));
         EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(20, 11), code5, "Code5"));

@@ -5,7 +5,7 @@ package io.github.mazegame;
  */
 public final class TuringMachineQuiz {
 
-    public static final String QUESTION = "Who is the inventor of the Turing machine concept?";
+    public static final String QUESTION = "Who is the inventor of the Turing\n machine?";
     
     public static final String[] ANSWERS = {
         "Ada Lovelace",
