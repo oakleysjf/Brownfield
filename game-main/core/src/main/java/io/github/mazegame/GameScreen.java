@@ -57,28 +57,40 @@ public class GameScreen implements Screen {
         CodeManager.resetCodes(); // Reset code collection state
         GameStats.reset(); // Reset stats for new game
         grid = new Grid("levels/level3.txt");
-        EntityManager.add(new QuestGiverEntity(new Vector2(1,1), Items.get(ItemID.RED_TEST_BOX), Items.get(ItemID.TEST_BOX)));
-        EntityManager.add(new GlueEntity(new Vector2(5,3)));
-        EntityManager.add(new io.github.mazegame.entities.EnergyDrinkEntity(new Vector2(10, 9)));
-        
-        // Add Turing Machine NPC that will give Code4 on correct answer
-        EntityManager.add(new io.github.mazegame.entities.TuringMachineNPCEntity(new Vector2(18, 5)));
-        
-        // Add Duck NPC that walks vertically and chases the player
-        EntityManager.add(new io.github.mazegame.entities.DuckNPCEntity(new Vector2(28, 13)));
         
         // Add code collectibles to reachable areas in the maze (based on level3.txt layout)
         io.github.mazegame.Code code1 = new io.github.mazegame.Code();
         io.github.mazegame.Code code2 = new io.github.mazegame.Code();
         io.github.mazegame.Code code5 = new io.github.mazegame.Code();
         
-        EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(2, 1), code1, "Code1"));
+        // Add Quest Giver that will give Code1 on successful trade
+        EntityManager.add(new QuestGiverEntity(new Vector2(1,1), Items.get(ItemID.RED_TEST_BOX), Items.get(ItemID.TEST_BOX), code1));
+        
+        EntityManager.add(new GlueEntity(new Vector2(5,3)));
+        EntityManager.add(new io.github.mazegame.entities.EnergyDrinkEntity(new Vector2(10, 9)));
+        
+        // Add Turing Machine NPC that will give Code4 on correct answer
+        io.github.mazegame.Code code4 = new io.github.mazegame.Code();
+        io.github.mazegame.entities.TuringMachineNPCEntity turingMachine = new io.github.mazegame.entities.TuringMachineNPCEntity(new Vector2(18, 5), code4);
+        EntityManager.add(turingMachine);
+        
+        // Add Computer terminal minigame that gives Code3
+        io.github.mazegame.Code code3 = new io.github.mazegame.Code();
+        io.github.mazegame.entities.ComputerEntity computer = new io.github.mazegame.entities.ComputerEntity(new Vector2(24, 4), code3);
+        EntityManager.add(computer);
+        
+        // Add Duck NPC that walks vertically and chases the player
+        EntityManager.add(new io.github.mazegame.entities.DuckNPCEntity(new Vector2(28, 13)));
+        
+        // Add remaining code collectibles (Code2 and Code5)
         EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(13, 1), code2, "Code2"));
         EntityManager.add(new io.github.mazegame.entities.CollectibleEntity(new Vector2(20, 11), code5, "Code5"));
         
-        // Register codes with CodeManager
+        // Register all 5 codes with CodeManager
         io.github.mazegame.CodeManager.registerCode(0, code1);
         io.github.mazegame.CodeManager.registerCode(1, code2);
+        io.github.mazegame.CodeManager.registerCode(2, code3);
+        io.github.mazegame.CodeManager.registerCode(3, code4);
         io.github.mazegame.CodeManager.registerCode(4, code5);
         
         // Makes the camera and sets the viewport to use the camera.

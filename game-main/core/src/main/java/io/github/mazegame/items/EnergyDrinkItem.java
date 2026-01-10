@@ -2,14 +2,14 @@ package io.github.mazegame.items;
 
 import com.badlogic.gdx.graphics.Texture;
 
-import io.github.mazegame.effects.SpeedEffect;
+import io.github.mazegame.effects.EnergyDrinkEffect;
 
 /** An item that grants a temporary speed boost, opposite of GlueEntity's slow effect. */
 public class EnergyDrinkItem extends Item {
     public EnergyDrinkItem() {
         name = ItemID.ENERGY_DRINK;
         isUsable = true;
-        effect = new SpeedEffect(7);
+        effect = new EnergyDrinkEffect();
         image = new Texture("images/entities/EnergyDrink.png");
     }
 }

@@ -45,7 +45,9 @@ public class WinScreen implements Screen {
         MazeGame.font.getData().setScale(1f);
         MazeGame.font.draw(game.batch, "Codes Collected: " + GameStats.codesCollected + "/5", 150, 300);
         MazeGame.font.draw(game.batch, "Quest Giver Interactions: " + GameStats.questGiverInteractions, 150, 260);
-        MazeGame.font.draw(game.batch, "Glue Used: " + GameStats.glueUsageCount, 150, 220);
+        MazeGame.font.draw(game.batch, "Puzzles Achieved: " + GameStats.puzzlesAchieved, 150, 220);
+        MazeGame.font.draw(game.batch, "Glue Used: " + GameStats.glueUsageCount, 150, 180);
+        MazeGame.font.draw(game.batch, "Energy Drinks Used: " + GameStats.energyDrinksUsed, 150, 140);
         
         // Draw instructions
         MazeGame.font.getData().setScale(0.8f);

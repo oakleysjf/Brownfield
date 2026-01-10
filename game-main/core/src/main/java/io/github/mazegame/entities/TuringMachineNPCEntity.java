@@ -12,7 +12,6 @@ import io.github.mazegame.CodeManager;
 /** An NPC that poses a Turing machine trivia question and gives Code4 on correct answer. */
 public class TuringMachineNPCEntity extends CharacterEntity {
 
-    private boolean questionAsked = false;
     private boolean answered = false;
     private Code code4Reward;
 
@@ -20,12 +19,13 @@ public class TuringMachineNPCEntity extends CharacterEntity {
      * Creates a new Turing machine NPC.
      * 
      * @param gridPosition the position to spawn at
+     * @param code4 the Code object to reward on correct answer
      */
-    public TuringMachineNPCEntity(Vector2 gridPosition) {
+    public TuringMachineNPCEntity(Vector2 gridPosition, Code code4) {
         super(gridPosition);
         image = new Texture("images/entities/character.png");
         isCollider = true;
-        code4Reward = new Code();
+        code4Reward = code4;
     }
 
     @Override
@@ -43,14 +43,15 @@ public class TuringMachineNPCEntity extends CharacterEntity {
         
         // Correct answer is index 1 (Alan Turing)
         if (answerIndex == 1) {
-            PlayerEntity.instance.collectCode(code4Reward);
-            CodeManager.registerCode(3, code4Reward);
+            code4Reward.collect();
             CodeManager.incrementCodesCollected();
+            io.github.mazegame.GameStats.recordCodeCollected();
+            io.github.mazegame.GameStats.recordPuzzleAchieved();
         }
     }
 
     /**
-     * {@return whether this NPC has already been answered}
+     * @return whether this NPC has already been answered
      */
     public boolean hasBeenAnswered() {
         return answered;

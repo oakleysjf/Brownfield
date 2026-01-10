@@ -249,6 +249,7 @@ public class PlayerEntity extends CharacterEntity {
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) {
             // Check current position and all 8 adjacent positions for NPC
             TuringMachineNPCEntity foundNPC = null;
+            io.github.mazegame.entities.ComputerEntity foundComputer = null;
             
             Vector2[] checkPositions = {
                 gridPosition,
@@ -267,6 +268,9 @@ public class PlayerEntity extends CharacterEntity {
                 if (entity instanceof TuringMachineNPCEntity) {
                     foundNPC = (TuringMachineNPCEntity) entity;
                     break;
+                } else if (entity instanceof io.github.mazegame.entities.ComputerEntity) {
+                    foundComputer = (io.github.mazegame.entities.ComputerEntity) entity;
+                    break;
                 }
             }
             
@@ -275,6 +279,12 @@ public class PlayerEntity extends CharacterEntity {
                 if (io.github.mazegame.GameScreen.currentGameScreen != null) {
                     io.github.mazegame.MazeGame game = (io.github.mazegame.MazeGame) Gdx.app.getApplicationListener();
                     game.setScreen(new io.github.mazegame.QuizScreen(game, io.github.mazegame.GameScreen.currentGameScreen, foundNPC));
+                }
+            } else if (foundComputer != null && !foundComputer.hasBeenAnswered()) {
+                // Open the minigame screen
+                if (io.github.mazegame.GameScreen.currentGameScreen != null) {
+                    io.github.mazegame.MazeGame game = (io.github.mazegame.MazeGame) Gdx.app.getApplicationListener();
+                    game.setScreen(new io.github.mazegame.ComputerMinigameScreen(game, io.github.mazegame.GameScreen.currentGameScreen, foundComputer));
                 }
             }
         }

@@ -26,6 +26,7 @@ public class EnergyDrinkEntity extends Entity {
         // If they are apply the speed effect to the player and set this entity to be deleted.
         if (PlayerEntity.instance.getGridPosition().equals(gridPosition)) {
             PlayerEntity.instance.giveEffect(new SpeedEffect(7));
+            io.github.mazegame.GameStats.recordEnergyDrinkUsed();
             isExpired = true;
         }
     }
