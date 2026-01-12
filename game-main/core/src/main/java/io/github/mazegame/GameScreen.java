@@ -39,6 +39,7 @@ public class GameScreen implements Screen {
 
     // ===================UI==================
     PauseMenu pauseMenu;
+    Scoreboard scoreboard;
 
     // ================Textures===============
     Texture playerTexture;
@@ -104,6 +105,9 @@ public class GameScreen implements Screen {
 
         // Creates the pause menu.
         pauseMenu = new PauseMenu(this);
+        
+        // Initialize the scoreboard
+        scoreboard = new Scoreboard();
 	}
 
     //#endregion
@@ -138,6 +142,11 @@ public class GameScreen implements Screen {
      * @param delta the time since the last frame.
      */
     public void logic(float delta) {
+        // Update the scoreboard with time penalties
+        if (!isPaused) {
+            scoreboard.update(delta);
+        }
+        
         // Updates all the enities in the entity manager when the game isn't paused.
         if (!isPaused) {
             EntityManager.update(delta);

@@ -52,8 +52,8 @@ public class Grid {
         FileHandle file = Gdx.files.internal(filePath);
         String text = file.readString();
 
-        // Splites the text into its lines and gets the length all lines should be
-        String[] lines = text.lines().toArray(length -> new String[length]);
+        // Splits the text into its lines and gets the length all lines should be
+        String[] lines = text.split("\\r?\\n");
         int width = lines[0].length();
 
         // Reverses the list and raises an error if any lines are a different length

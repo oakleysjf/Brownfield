@@ -16,6 +16,9 @@ public final class AchievementManager {
     public void init(){
         add(new PickUpItemAchievement());
         add(new GiveRedBoxAchievement());
+        add(new HandInAssignmentAchievement());
+        add(new InteractWithEverythingAchievement());
+        add(new SolveBothPuzzlesAchievement());
     }
 }
 
@@ -39,6 +42,32 @@ class GiveRedBoxAchievement extends Achievement {
     }
 }
 
+class HandInAssignmentAchievement extends Achievement {
+    public HandInAssignmentAchievement() {
+        super(
+            AchievementID.HAND_IN_ASSIGNMENT,
+            "Hand In Assignment",
+            "Collect all 5 codes and complete the assignment."
+        );
+    }
+}
 
+class InteractWithEverythingAchievement extends Achievement {
+    public InteractWithEverythingAchievement() {
+        super(
+            AchievementID.INTERACT_WITH_EVERYTHING,
+            "Social Butterfly",
+            "Interact with all quest givers in the game."
+        );
+    }
+}
 
-
+class SolveBothPuzzlesAchievement extends Achievement {
+    public SolveBothPuzzlesAchievement() {
+        super(
+            AchievementID.SOLVE_BOTH_PUZZLES,
+            "Puzzle Master",
+            "Solve both puzzles (computer minigame and Turing machine quiz)."
+        );
+    }
+}
